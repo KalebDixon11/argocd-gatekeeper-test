@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gatekeeper-system-appset
+  namespace: argocd
+spec:
+  generators:
+        generators:
+          - list:
+              elements: 
+                - server: https://kubernetes.default.svc
+                  namespace: gatekeeper-system
+  template:
+    metadata:
+      name: gatekeeper-system
+    spec:
+      project: default
+      syncPolicy: 
+        automated:
+          selfHeal: true    
+        syncOptions:
+        - CreateNamespace=true  
+      # defines from which Git repository to extract the desired Application manifests
+      source:
+        - chart: '{{.chart}}'
+        # developers may customize app details using JSON files from above repo URL
+          repoURL: https://github.com/open-policy-agent/gatekeeper.git
+          targetRevision: HEAD
+          path: charts/gatekeeper
+      destination:
+        #  API Server URL for the cluster
+        server: '{{.server}}'
+        # Target namespace in which to deploy the manifests from source 
+        namespace: '{{.namespace}}'
+      syncPolicy: 
+        automated:
+          selfHeal: true
+          prune: true
+        syncOptions:
+        - CreateNamespace=true
