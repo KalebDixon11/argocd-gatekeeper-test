@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gatekeeper-opa-appset
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements: 
+      - server: https://kubernetes.default.svc
+        namespace: gatekeeper-system
+  template:
+    metadata:
+      name: gatekeeper-opa-policies
+    spec:
+      project: default
+      syncPolicy: 
+        automated:
+          selfHeal: true    
+        syncOptions:
+        - CreateNamespace=true  
+      # defines from which Git repository to extract the desired Application manifests
+      source:
+      # developers may customize app details using JSON files from above repo URL
+          repoURL: git@github.com:KalebDixon11/constraint-template.git
+          targetRevision: HEAD
+          path: ./
+      destination:
+        #  API Server URL for the cluster
+        server: '{{server}}'
+        # Target namespace in which to deploy the manifests from source 
+        namespace: '{{namespace}}'
+      syncPolicy: 
+        automated:
+          selfHeal: true
+          prune: true
+        syncOptions:
+        - CreateNamespace=true
