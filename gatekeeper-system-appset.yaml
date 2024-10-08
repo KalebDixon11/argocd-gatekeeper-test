@@ -5,11 +5,10 @@ metadata:
   namespace: argocd
 spec:
   generators:
-        generators:
-          - list:
-              elements: 
-                - server: https://kubernetes.default.svc
-                  namespace: gatekeeper-system
+  - list:
+    elements: 
+    - server: https://kubernetes.default.svc
+      namespace: gatekeeper-system
   template:
     metadata:
       name: gatekeeper-system
