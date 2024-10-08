@@ -27,9 +27,9 @@ spec:
           path: charts/gatekeeper
       destination:
         #  API Server URL for the cluster
-        server: '{{.server}}'
+        server: {{.server}}
         # Target namespace in which to deploy the manifests from source 
-        namespace: '{{.namespace}}'
+        namespace: {{.namespace}}
       syncPolicy: 
         automated:
           selfHeal: true
