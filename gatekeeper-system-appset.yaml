@@ -21,8 +21,7 @@ spec:
         - CreateNamespace=true  
       # defines from which Git repository to extract the desired Application manifests
       source:
-        - chart: '{{.chart}}'
-        # developers may customize app details using JSON files from above repo URL
+      # developers may customize app details using JSON files from above repo URL
           repoURL: https://github.com/open-policy-agent/gatekeeper.git
           targetRevision: HEAD
           path: charts/gatekeeper
